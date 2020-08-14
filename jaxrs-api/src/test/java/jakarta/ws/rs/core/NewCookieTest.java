@@ -47,7 +47,44 @@ public class NewCookieTest {
         NewCookie nc = new NewCookie(c);
         assertEquals(nc.getName(), c.getName());
         try {
-            nc = new NewCookie.Builder((Cookie)null).build();
+			nc = new NewCookie((Cookie) null);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+            nc = new NewCookie(null, "comment", 120, true);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    @Test
+    public void testSameSite() {
+
+        NewCookie sameSiteOmit = new NewCookie("name", "value", "/", "localhost", 1, null, 0, null, false, false);
+        assertNull(sameSiteOmit.getSameSite());
+
+        NewCookie sameSiteNull = new NewCookie("name", "value", "/", "localhost", 1, null, 0, null, false, false, null);
+        assertNull(sameSiteNull.getSameSite());
+
+        NewCookie sameSiteNone = new NewCookie("name", "value", "/", "localhost", 1, null, 0, null, false, false, NewCookie.SameSite.NONE);
+        assertEquals(NewCookie.SameSite.NONE, sameSiteNone.getSameSite());
+
+        NewCookie sameSiteLax = new NewCookie("name", "value", "/", "localhost", 1, null, 0, null, false, false, NewCookie.SameSite.LAX);
+        assertEquals(NewCookie.SameSite.LAX, sameSiteLax.getSameSite());
+
+        NewCookie sameSiteStrict = new NewCookie("name", "value", "/", "localhost", 1, null, 0, null, false, false, NewCookie.SameSite.STRICT);
+        assertEquals(NewCookie.SameSite.STRICT, sameSiteStrict.getSameSite());
+
+    }
+
+    @Test
+    public void testBuilder() {
+        Cookie c = new Cookie.Builder("name").value("value").build();
+        NewCookie nc = new NewCookie.Builder(c).build();
+        assertEquals(nc.getName(), c.getName());
+        try {
+			nc = new NewCookie.Builder((Cookie) null).build();
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
@@ -59,7 +96,7 @@ public class NewCookieTest {
     }
 
     @Test
-    public void testSameSite() {
+    public void testSameSiteOnInstancesBuiltWithBuilder() {
 
         NewCookie sameSiteOmit = new NewCookie.Builder("name").value("value").path("/").domain("localhost").maxAge(0)
                 .build();
@@ -70,15 +107,15 @@ public class NewCookieTest {
         assertNull(sameSiteNull.getSameSite());
 
         NewCookie sameSiteNone = new NewCookie.Builder("name").value("value").path("/").domain("localhost").maxAge(0)
-                .sameSite(SameSite.NONE).build();
+                .sameSite(NewCookie.SameSite.NONE).build();
         assertEquals(NewCookie.SameSite.NONE, sameSiteNone.getSameSite());
 
         NewCookie sameSiteLax = new NewCookie.Builder("name").value("value").path("/").domain("localhost").maxAge(0)
-                .sameSite(SameSite.LAX).build();
+                .sameSite(NewCookie.SameSite.LAX).build();
         assertEquals(NewCookie.SameSite.LAX, sameSiteLax.getSameSite());
 
         NewCookie sameSiteStrict = new NewCookie.Builder("name").value("value").path("/").domain("localhost").maxAge(0)
-                .sameSite(SameSite.STRICT).build();
+                .sameSite(NewCookie.SameSite.STRICT).build();
         assertEquals(NewCookie.SameSite.STRICT, sameSiteStrict.getSameSite());
 
     }

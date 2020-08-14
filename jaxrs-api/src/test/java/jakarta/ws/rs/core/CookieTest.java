@@ -43,6 +43,28 @@ public class CookieTest {
     @Test
     public void testEquals() {
         Object nullObj = null;
+        Cookie cookie = new Cookie("name", "value");
+        Cookie cookie1 = new Cookie("name", "value");
+        Cookie cookie2 = new Cookie("name", "value2");
+        NewCookie newCookie = new NewCookie("name", "value");
+        NewCookie newCookie1 = new NewCookie("name", "value");
+        NewCookie newCookie2 = new NewCookie("name", "value2");
+        assertFalse(cookie.equals(nullObj));
+        assertFalse(cookie.equals(newCookie));
+        assertFalse(cookie.equals(cookie2));
+        assertTrue(cookie.equals(cookie1));
+        assertTrue(cookie.equals(newCookie.toCookie()));
+        assertTrue(newCookie.equals(newCookie1));
+        assertFalse(newCookie.equals(newCookie2));
+    }
+
+    /**
+     * Test of equals method, of class Cookie and NewCookie on instances built
+     * with builder.
+     */
+    @Test
+    public void testEqualsOnInstancesBuiltWithBuilder() {
+        Object nullObj = null;
         Cookie cookie = new Cookie.Builder("name").value("value").build();
         Cookie cookie1 = new Cookie.Builder("name").value("value").build();
         Cookie cookie2 = new Cookie.Builder("name").value("value2").build();
@@ -57,4 +79,5 @@ public class CookieTest {
         assertTrue(newCookie.equals(newCookie1));
         assertFalse(newCookie.equals(newCookie2));
     }
+
 }
