@@ -96,7 +96,7 @@ public class CookieTest {
         }
 
         try {
-			new Cookie(null, "value", "path", "domain");
+            new Cookie(null, "value", "path", "domain");
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException e) {
         }
