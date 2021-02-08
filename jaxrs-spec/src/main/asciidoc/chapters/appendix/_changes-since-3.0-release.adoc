@@ -18,5 +18,7 @@ default exception mappers.
 `@FormParam`, `@HeaderParam`, `@MatrixParam` and `@QueryParam` parameters.
 * Deprecated Link.JaxbLink and Link.JaxbAdapter inner classes.
 * New method `#hasProperty(String)` wherever `#getProperty(String)` exists
+* `Response.created(URI)` now resolves relative URIs into an absolute URI
+against the *base* URI, not against the *request* URI anymore.
 * Constructors of `Cookie` class are deprecated in favor of new `Cookie.Builder` class.
 * Constructors of `NewCookie` are deprecated in favor of new `NewCookie.Builder` class.
