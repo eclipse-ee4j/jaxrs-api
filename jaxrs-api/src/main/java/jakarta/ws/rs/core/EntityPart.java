@@ -104,16 +104,15 @@ public interface EntityPart {
     Optional<String> getFileName();
 
     /**
-     * Returns the input stream for this part. This is the content body of the part
-     * and is accessed as a stream to avoid loading potentially large amounts of
-     * data into the heap.
-     * 
-     * It is the responsibility of the calling code to close this stream after
-     * receiving it.
-     * 
-     * @return an {@code InputStream} representing the content of this part
+     * Get the content object for this EntityPart.
+     * <p>
+     * If the entity is represented by an un-consumed {@link InputStream input stream} the method will return the input
+     * stream.
+     * </p>
+     *
+     * @return the entity of this part
      */
-    InputStream getContent();
+    Object getContent();
 
     /**
      * Converts the content stream for this part to the specified class and returns
@@ -201,6 +200,27 @@ public interface EntityPart {
      * @return the media type for this part
      */
     MediaType getMediaType();
+
+    /**
+     * Get data type.
+     * <p>
+     * This information is used to select a proper {@link jakarta.ws.rs.ext.MessageBodyWriter} to be used for serializing the
+     * {@link #getContent()} of this part.
+     *
+     * @return data type.
+     */
+    Class<?> getType();
+
+    /**
+     * Get generic data type.
+     * <p>
+     * This information is used to select a proper {@link jakarta.ws.rs.ext.MessageBodyWriter} to be used for serializing the
+     * {@link #getContent()}  of this part.
+     *
+     * @return generic data type.
+     */
+    Type getGenericType();
+
 
     /**
      * Builder for {@link EntityPart} instances.
